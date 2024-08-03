@@ -1,5 +1,7 @@
 package fr.hamtec
 
+import fr.hamtec.constructeurRunBlocking.*
+
 fun main() {
-    println("Hello World!")
+    testCoroutine(firstSimpleDemo())
 }
