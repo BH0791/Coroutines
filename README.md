@@ -26,3 +26,5 @@ fun <T> CoroutineScope.async(
     block: suspend CoroutineScope.() -> T
 ): Deferred<T>
 ```
+*<br>
+Remerciements<br> Jim Steinberger<br>Kotlin<br>Oracle<br>...*
