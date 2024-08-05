@@ -11,4 +11,5 @@
 8. La gestion des erreurs dans une coroutine
 9. La gestion locale
 10. La gestion centralisée
+11. Contexte de la coroutine
 ---
