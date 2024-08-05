@@ -6,5 +6,5 @@ import fr.hamtec.constructeurLaunch.*
 import fr.hamtec.constructeurRunBlocking.*
 
 fun main() {
-    testAttendreLaFin()
+    testAnnulerUneCoroutine()
 }
