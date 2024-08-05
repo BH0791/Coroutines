@@ -27,4 +27,4 @@ fun <T> CoroutineScope.async(
 ): Deferred<T>
 ```
 *<br>
-Remerciements<br> Jim Steinberger<br>Kotlin<br>Oracle<br>Ludovic ROLAND...*
+Remerciements<br>Ludovic ROLAND<br>Jim Steinberger..*
