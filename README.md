@@ -1,8 +1,8 @@
 ## Les coroutines
 Aide-mémoire
 
->Une coroutine est un modèle de conception de simultanéité que vous pouvez utiliser sur Android pour simplifier le code qui s'exécute de manière asynchrone. Les coroutines ont été ajoutées à Kotlin dans la version 1.3 et sont basées sur des concepts établis dans d'autres langages.
-
+>Une coroutine est un modèle de conception de simultanéité que vous pouvez utiliser sur Android pour simplifier le code qui s'exécute de manière asynchrone. Les coroutines ont été ajoutées à Kotlin dans la version 1.3 et sont basées sur des concepts établis dans d'autres langages.<br>
+>Les coroutines sont des sous-routines ou des programmes qui permettent le multitâche coopératif. Par conséquent, les coroutines peuvent être suspendues ou reprises, ou elles peuvent céder le passage à une autre coroutine. En Kotlin, le mot-clé suspend avant la fonction signifie qu’elle suspend l’appelant et ne peut être appelée qu’au sein d’une coroutine.
 ### runBlocking
 ```
 expect fun <T> runBlocking(
