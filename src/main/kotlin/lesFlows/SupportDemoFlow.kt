@@ -5,13 +5,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 suspend fun sampleFlow1(): Flow<Int> = flow {
-    repeat(10) {
+    repeat(3) {
         delay(500)
         emit(it)
     }
 }
 suspend fun sampleFlow2(): Flow<Int> = flow {
-    repeat(10) {
+    repeat(3) {
         delay(500)
         emit(it * it)
     }
