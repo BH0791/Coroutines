@@ -1,6 +1,7 @@
 package fr.hamtec.coroutineDansCoroutine
 
 import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 import kotlin.system.measureTimeMillis
 
 fun firstCordansCor() = runBlocking {
@@ -174,9 +175,9 @@ fun sixteenthCorDansCor(): Unit {
                 delay(1000)
                 println("End of First child coroutine")
             }
-            launch(NonCancellable) {
+            launch(Job() + Dispatchers.IO) {
                 println("Second child coroutine thread: ${Thread.currentThread().name}")
-                delay(500)
+                //delay(500)
                 println("End of Second child coroutine")
             }
             //println("End of parent coroutine")
@@ -191,6 +192,45 @@ fun sixteenthCorDansCor(): Unit {
 fun testSixteenthCorDansCor(): Unit {
     val coroutineScopeTimeInMills = measureTimeMillis {
         sixteenthCorDansCor()
+    }
+    println(
+            """
+    ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    coroutineTimeInMills = $coroutineScopeTimeInMills ms
+    ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"""
+    )
+}
+
+fun seventhCorDansCor(): Unit {
+    runBlocking {
+
+        val parentJob = GlobalScope.launch {
+            println("Parent coroutine")
+            launch() {
+                println("First child coroutine thread: ${Thread.currentThread().name}")
+                delay(1000)
+                println("End of First child coroutine")
+            }
+            launch(SupervisorJob() + Dispatchers.IO + CoroutineExceptionHandler{
+                CoroutineContext, throwable ->
+                println("Exception: ${throwable.message}")
+            }) {
+                println("Second child coroutine thread: ${Thread.currentThread().name}")
+                50/0
+                println("End of Second child coroutine")
+            }
+            println("End of parent coroutine")
+        }
+
+        parentJob.join()
+    }
+    Thread.sleep(1500)
+    println("Fin program")
+}
+
+fun testSeventhCorDansCor(): Unit {
+    val coroutineScopeTimeInMills = measureTimeMillis {
+        seventhCorDansCor()
     }
     println(
             """
