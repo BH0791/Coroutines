@@ -1,7 +1,6 @@
 package fr.hamtec.coroutineDansCoroutine
 
 import kotlinx.coroutines.*
-import kotlin.coroutines.CoroutineContext
 import kotlin.system.measureTimeMillis
 
 fun firstCordansCor() = runBlocking {
@@ -169,7 +168,7 @@ fun sixteenthCorDansCor(): Unit {
     runBlocking {
 
         val parentJob = GlobalScope.launch {
-            //println("Parent coroutine-6")
+            println("Parent coroutine")
             launch() {
                 println("First child coroutine thread: ${Thread.currentThread().name}")
                 delay(1000)
@@ -180,7 +179,7 @@ fun sixteenthCorDansCor(): Unit {
                 //delay(500)
                 println("End of Second child coroutine")
             }
-            //println("End of parent coroutine")
+            println("End of parent coroutine")
         }
 
         parentJob.cancel()
@@ -211,12 +210,11 @@ fun seventhCorDansCor(): Unit {
                 delay(1000)
                 println("End of First child coroutine")
             }
-            launch(SupervisorJob() + Dispatchers.IO + CoroutineExceptionHandler{
-                CoroutineContext, throwable ->
+            launch(SupervisorJob() + Dispatchers.IO + CoroutineExceptionHandler { CoroutineContext, throwable ->
                 println("Exception: ${throwable.message}")
             }) {
                 println("Second child coroutine thread: ${Thread.currentThread().name}")
-                50/0
+                50 / 0
                 println("End of Second child coroutine")
             }
             println("End of parent coroutine")
@@ -224,13 +222,50 @@ fun seventhCorDansCor(): Unit {
 
         parentJob.join()
     }
-    Thread.sleep(1500)
     println("Fin program")
 }
 
 fun testSeventhCorDansCor(): Unit {
     val coroutineScopeTimeInMills = measureTimeMillis {
         seventhCorDansCor()
+    }
+    println(
+            """
+    ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    coroutineTimeInMills = $coroutineScopeTimeInMills ms
+    ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"""
+    )
+}
+
+fun eighthCorDansCor(): Unit {
+    runBlocking {
+
+        val parentJob = GlobalScope.launch {
+            //println("Parent coroutine")
+            val childJobFirst = async(start = CoroutineStart.LAZY) {
+                println("First child coroutine thread: ${Thread.currentThread().name}")
+                delay(1500)
+                println("End of First child coroutine")
+            }
+            val childrJobSecond = async(start = CoroutineStart.LAZY) {
+                println("Second child coroutine thread: ${Thread.currentThread().name}")
+                delay(1000)
+                println("End of Second child coroutine")
+            }
+            childJobFirst.start()
+            childJobFirst.await()
+            childrJobSecond.start()
+            childrJobSecond.await()
+        }
+
+        parentJob.join()
+    }
+    println("Fin program")
+}
+
+fun testEighthCorDansCor(): Unit {
+    val coroutineScopeTimeInMills = measureTimeMillis {
+        eighthCorDansCor()
     }
     println(
             """
