@@ -1,7 +1,7 @@
 package fr.hamtec
 
-import fr.hamtec.lesChannels.firstChannel
+import fr.hamtec.lesChannels.testChannel
 
 fun main() {
-    firstChannel()
+    testChannel()
 }
