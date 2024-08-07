@@ -130,7 +130,6 @@ fun testFourthCorDansCor(): Unit {
 
 fun fifthCorDansCor(): Unit {
     runBlocking {
-
         val parentJob = GlobalScope.launch(CoroutineExceptionHandler { _, throwable ->
             println("An error occurred while executing the coroutine : ${throwable.message}")
         }) {
@@ -156,6 +155,42 @@ fun fifthCorDansCor(): Unit {
 fun testFifthCorDansCor(): Unit {
     val coroutineScopeTimeInMills = measureTimeMillis {
         fifthCorDansCor()
+    }
+    println(
+            """
+    ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    coroutineTimeInMills = $coroutineScopeTimeInMills ms
+    ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"""
+    )
+}
+
+fun sixteenthCorDansCor(): Unit {
+    runBlocking {
+
+        val parentJob = GlobalScope.launch {
+            //println("Parent coroutine-6")
+            launch() {
+                println("First child coroutine thread: ${Thread.currentThread().name}")
+                delay(1000)
+                println("End of First child coroutine")
+            }
+            launch(NonCancellable) {
+                println("Second child coroutine thread: ${Thread.currentThread().name}")
+                delay(500)
+                println("End of Second child coroutine")
+            }
+            //println("End of parent coroutine")
+        }
+
+        parentJob.cancel()
+    }
+    Thread.sleep(1500)
+    println("Fin program")
+}
+
+fun testSixteenthCorDansCor(): Unit {
+    val coroutineScopeTimeInMills = measureTimeMillis {
+        sixteenthCorDansCor()
     }
     println(
             """
