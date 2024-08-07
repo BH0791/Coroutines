@@ -1,7 +1,7 @@
 package fr.hamtec
 
-import fr.hamtec.lesChannels.testChannel
+import fr.hamtec.lesFlows.testFlow
 
-fun main() {
-    testChannel()
+suspend fun main() {
+    testFlow()
 }
