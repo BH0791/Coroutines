@@ -12,4 +12,5 @@
 9. La gestion locale
 10. La gestion centralisée
 11. Contexte de la coroutine
+12. Les channels
 ---
