@@ -43,6 +43,7 @@ suspend fun MethFlowFlatMapConcat() {
     combined3Flow.collect { println("$it") }
 }
 
+@OptIn(ExperimentalCoroutinesApi::class)
 suspend fun MethFlowFlapMapMerge() {
     println("La méthode merge()")
     val combined4Flow = sampleFlow1().flatMapMerge { value1 ->
@@ -71,6 +72,7 @@ suspend fun testFlow(): Unit {
     )
 }
 
+@OptIn(DelicateCoroutinesApi::class)
 fun testEmitData(): Unit {
     runBlocking {
         println("Cor ==")
