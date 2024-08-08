@@ -1,10 +1,7 @@
 package fr.hamtec.lesFlows
 
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlin.system.measureTimeMillis
 
 fun firstFlow(): Unit {
@@ -27,40 +24,44 @@ fun firstFlow(): Unit {
     println("○ End program ○")
 }
 
-suspend fun appelMethFlow(): Unit {
-    val combinedFlow = sampleFlow1().zip(sampleFlow2()) { first, second -> "($first, $second)" }
-    sampleFlow1().collect { println("$it") }
+suspend fun MethFlowCombine() {
+    println("La méthode combine()")
     val combined2Flow = sampleFlow1().combine(sampleFlow2()) { first, second ->
         "($first, $second)"
     }
+    combined2Flow.collect { println("$it") }
+}
+
+@OptIn(ExperimentalCoroutinesApi::class)
+suspend fun MethFlowFlatMapConcat() {
+    println("La méthode flatMapConcat() ")
     val combined3Flow = sampleFlow1().flatMapConcat { value1 ->
         sampleFlow2().map { value2 ->
             "($value1, $value2)"
         }
     }
-
-    println("La méthode zip()")
-    combinedFlow.collect { println("$it") }
-    println("La méthode combine()")
-    combined2Flow.collect { println("$it") }
-    println("La méthode flatMapConcat() ")
     combined3Flow.collect { println("$it") }
+}
 
-
-        val combined4Flow = sampleFlow1().flatMapMerge { value1 ->
-            sampleFlow2().map { value2 ->
-                "($value1, $value2)"
-            }
+suspend fun MethFlowFlapMapMerge() {
+    println("La méthode merge()")
+    val combined4Flow = sampleFlow1().flatMapMerge { value1 ->
+        sampleFlow2().map { value2 ->
+            "($value1, $value2)"
         }
-        println("La méthode merge()")
-        combined4Flow.collect { println("$it") }
     }
+    combined4Flow.collect { println("$it") }
+}
 
-
+suspend fun MethFlowZip(): Unit {
+    println("La méthode zip()")
+    val combinedFlow = sampleFlow1().zip(sampleFlow2()) { first, second -> "($first, $second)" }
+    combinedFlow.collect { println("$it") }
+}
 
 suspend fun testFlow(): Unit {
     val tmps = measureTimeMillis {
-        appelMethFlow()
+        MethFlowZip()
     }
     println(
             """
@@ -68,4 +69,14 @@ suspend fun testFlow(): Unit {
   coroutineTimeInMills = $tmps ms 
 ╚════════════════════════════════╝"""
     )
+}
+
+fun testEmitData(): Unit {
+    runBlocking {
+        println("Cor ==")
+        val job = GlobalScope.launch() {
+            emitData().collect { println("valeur : $it") }
+        }
+        job.join()
+    }
 }
